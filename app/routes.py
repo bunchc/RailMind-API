@@ -1,6 +1,10 @@
-from flask import jsonify, request
+# routes.py
+
+from flask import jsonify
 from flask_restful import Resource, reqparse
 from app import app, api
+
+from RPiMotorLib import RPiMotorDC
 
 # Sample data for trains and accessories
 trains = [
@@ -12,6 +16,10 @@ accessories = [
     {'id': 1, 'name': 'Signal Light', 'activated': False},
     {'id': 2, 'name': 'Crossing Gate', 'activated': False},
 ]
+
+# Initialize the DC motors for each train
+motor_channels = [f"MOTOR{i}" for i in range(1, len(trains) + 1)]
+motors = {train['id']: RPiMotorDC(channel, 200) for train, channel in zip(trains, motor_channels)}
 
 # Define parsers
 speed_parser = reqparse.RequestParser()
@@ -31,6 +39,12 @@ class TrainSpeedResource(Resource):
         for train in trains:
             if train['id'] == train_id:
                 train['speed'] = speed
+
+                # Control the DC motor based on the speed
+                motor = motors[train_id]
+                motor.setMotorSpeed(speed)
+                motor.motorRun()
+
                 return '', 204
         return jsonify({'error': 'Train not found'}), 404
 
