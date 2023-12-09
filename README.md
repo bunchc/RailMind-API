@@ -62,4 +62,4 @@ curl -X PUT http://api.example.com/trains/1/speed?speed=75 \
 
 This example sets the speed of the train with ID 1 to 75.
 
-This diagram represents the basic interactions with the RailMinds API.
+This diagram represents the basic interactions with the RailMinds API
