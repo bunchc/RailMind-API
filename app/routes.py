@@ -3,7 +3,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
 from app import app, api
-
 from RPiMotorLib import RPiMotorDC
 
 # Sample data for trains and accessories
@@ -28,9 +27,11 @@ speed_parser.add_argument('speed', type=int, help='Speed value (0-100)', require
 direction_parser = reqparse.RequestParser()
 direction_parser.add_argument('direction', type=str, choices=('forward', 'reverse'), help='Direction (forward or reverse)', required=True)
 
+
 class TrainListResource(Resource):
     def get(self):
         return jsonify({'trains': trains})
+
 
 class TrainSpeedResource(Resource):
     def put(self, train_id):
@@ -48,6 +49,7 @@ class TrainSpeedResource(Resource):
                 return '', 204
         return jsonify({'error': 'Train not found'}), 404
 
+
 class TrainDirectionResource(Resource):
     def put(self, train_id):
         args = direction_parser.parse_args()
@@ -58,9 +60,11 @@ class TrainDirectionResource(Resource):
                 return '', 204
         return jsonify({'error': 'Train not found'}), 404
 
+
 class AccessoryListResource(Resource):
     def get(self):
         return jsonify({'accessories': accessories})
+
 
 class AccessoryActivateResource(Resource):
     def put(self, accessory_id):
@@ -70,6 +74,7 @@ class AccessoryActivateResource(Resource):
                 return '', 204
         return jsonify({'error': 'Accessory not found'}), 404
 
+
 class AccessoryDeactivateResource(Resource):
     def put(self, accessory_id):
         for accessory in accessories:
@@ -77,6 +82,7 @@ class AccessoryDeactivateResource(Resource):
                 accessory['activated'] = False
                 return '', 204
         return jsonify({'error': 'Accessory not found'}), 404
+
 
 # API routes
 api.add_resource(TrainListResource, '/trains')
