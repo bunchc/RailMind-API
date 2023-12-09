@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Model Train Control API
+  version: 1.1.0
+  description: API for controlling model trains and accessories
+
+paths:
+  /trains:
+    get:
+      summary: Get a list of available trains
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                trains:
+                  - id: 1
+                    name: Express Train
+                  - id: 2
+                    name: Freight Train
+
+  /trains/{trainId}/speed:
+    put:
+      summary: Set the speed of a specific train
+      parameters:
+        - in: path
+          name: trainId
+          required: true
+          description: ID of the train
+          schema:
+            type: integer
+        - in: query
+          name: speed
+          required: true
+          description: Speed value (0-100)
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100
+      responses:
+        '204':
+          description: Speed updated successfully
+        '400':
+          description: Invalid speed value
+        '404':
+          description: Train not found
+
+  /trains/{trainId}/direction:
+    put:
+      summary: Change the direction of a specific train
+      parameters:
+        - in: path
+          name: trainId
+          required: true
+          description: ID of the train
+          schema:
+            type: integer
+        - in: query
+          name: direction
+          required: true
+          description: Direction (forward or reverse)
+          schema:
+            type: string
+            enum:
+              - forward
+              - reverse
+      responses:
+        '204':
+          description: Direction updated successfully
+        '400':
+          description: Invalid direction value
+        '404':
+          description: Train not found
+
+  /accessories:
+    get:
+      summary: Get a list of available accessories
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                accessories:
+                  - id: 1
+                    name: Signal Light
+                  - id: 2
+                    name: Crossing Gate
+
+  /accessories/{accessoryId}/activate:
+    put:
+      summary: Activate a specific accessory
+      parameters:
+        - in: path
+          name: accessoryId
+          required: true
+          description: ID of the accessory
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Accessory activated successfully
+        '404':
+          description: Accessory not found
+
+  /accessories/{accessoryId}/deactivate:
+    put:
+      summary: Deactivate a specific accessory
+      parameters:
+        - in: path
+          name: accessoryId
+          required: true
+          description: ID of the accessory
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Accessory deactivated successfully
+        '404':
+          description: Accessory not found
