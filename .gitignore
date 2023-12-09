@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+
+# Docker
+.DS_Store
+docker-compose.override.yml
+docker-compose.yml
+
+# IDE/Editor
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Logs and Databases
+*.log
+*.sqlite
+*.db
+
+# Miscellaneous
+*.pyc
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
