@@ -1,0 +1,65 @@
+name: RailMindsAPI CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint Code
+      run: |
+        pip install flake8
+        flake8 --exclude=tests
+
+    - name: Run Tests
+      run: |
+        python -m unittest tests/test_railminds_api.py
+
+    - name: Generate Code Coverage Report
+      run: |
+        pip install coverage
+        coverage run -m unittest tests/test_railminds_api.py
+        coverage report -m
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Deploy to Production
+      run: |
+        # Add deployment steps here
+        # Examples include deploying to a server, cloud platform, etc.
+        echo "Deployment steps go here"
+
